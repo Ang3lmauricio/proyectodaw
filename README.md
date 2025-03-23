@@ -1,2 +1,0 @@
-# proyectodaw
-paginas web, php
