@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Login</title>
+        <link rel="stylesheet" href="login.css">
+        <script src="verifica.js"></script>
+      </head>
+      <body>
+    
+        <div class="login-box">
+          <img src="im/pii.png" class="avatar" alt="Avatar Image">
+          <h1>INGRESA AQUI</h1>
+
+            <FORM name=form action="registrar.php" method="post" onsubmit="return validar()">
+
+            <label >Usuario</label>
+            <input type="text"name="login" id="login" placeholder="Ingresa usuario">
+            <label for="correo">Correo Electronico</label>
+            <input type="text" name="correo" id="correo" placeholder="Ingresa correo">
+            
+            <label >Contraseña</label>
+            <input type="password" name="password" id="password" placeholder="Ingresa contraseña">
+            <INPUT type="submit" id="yu" value=ACCEDER>
+            <a href="formulario.html">¿No tienes una cuenta?</a>
+            
+          </form>
+        </div>
+      </body>
+    </html>
