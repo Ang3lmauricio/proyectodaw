@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="../../index.html">Sistema de Gestión</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-bs-toggle="dropdown">
+                            Productos
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../../productos/crearproducto.html">Crear Producto</a></li>
+                            <li><a class="dropdown-item" href="../../productos/actualizarproducto.html">Actualizar Producto</a></li>
+                            <li><a class="dropdown-item" href="../../productos/eliminarproducto.html">Eliminar Producto</a></li>
+                            <li><a class="dropdown-item" href="../../productos/buscarproductos.html">Buscar Productos</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12 text-center mb-4">
+                <h1>Sistema de Gestión de Productos</h1>
+                <p class="lead">Seleccione una opción para gestionar los productos</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Crear Producto</h5>
+                        <p class="card-text">Añadir un nuevo producto al inventario</p>
+                        <a href="../../productos/crearproducto.html" class="btn btn-success">
+                            <i class="fas fa-plus-circle"></i> Crear
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Actualizar Producto</h5>
+                        <p class="card-text">Modificar productos existentes</p>
+                        <a href="../../productos/actualizarproducto.html" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Actualizar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Eliminar Producto</h5>
+                        <p class="card-text">Eliminar productos del inventario</p>
+                        <a href="../../productos/eliminarproducto.html" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Buscar Productos</h5>
+                        <p class="card-text">Buscar y gestionar productos</p>
+                        <a href="../../productos/buscar_productos.html" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Buscar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome para los iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

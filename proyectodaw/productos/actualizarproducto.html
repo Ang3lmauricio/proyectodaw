@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Actualizar Producto</h2>
+        
+        <!-- Formulario de búsqueda -->
+        <div id="busquedaProducto">
+            <div class="mb-3">
+                <label for="buscarId" class="form-label">Ingrese el ID del producto</label>
+                <input type="number" class="form-control" id="buscarId" min="1" required>
+            </div>
+            <button onclick="buscarProducto()" class="btn btn-primary">Buscar Producto</button>
+            <a href="productos.html" class="btn btn-secondary">Cancelar</a>
+        </div>
+
+        <div id="mensajeError" class="alert alert-danger mt-3" style="display: none;"></div>
+
+        <!-- Formulario de actualización -->
+        <form id="formActualizarProducto" style="display: none;" onsubmit="actualizarProducto(event)">
+            <input type="hidden" id="id" name="id">
+            
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre del Producto</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="precio" class="form-label">Precio</label>
+                <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="categoria_id" class="form-label">Categoría</label>
+                <select class="form-control" id="categoria_id" name="categoria_id" required>
+                    <!-- Las categorías se cargarán dinámicamente -->
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Actualizar Producto</button>
+            <a href="productos.html" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function buscarProducto() {
+            const productId = document.getElementById('buscarId').value;
+            const mensajeError = document.getElementById('mensajeError');
+            
+            try {
+                mensajeError.style.display = 'none';
+                
+                if (!productId || productId <= 0) {
+                    throw new Error('Por favor, ingrese un ID de producto válido');
+                }
+
+                const response = await fetch(`../Api/controllers/ProductoController.php?action=obtener_uno&id=${productId}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Error del servidor: ${response.status}`);
+                }
+
+                const resultado = await response.json();
+
+                if (!resultado.success || !resultado.data) {
+                    throw new Error(`No se encontró el producto con el ID: ${productId}`);
+                }
+
+                const producto = resultado.data;
+
+                // Mostrar formulario y ocultar búsqueda
+                document.getElementById('busquedaProducto').style.display = 'none';
+                document.getElementById('formActualizarProducto').style.display = 'block';
+                
+                // Llenar los campos del formulario
+                document.getElementById('id').value = producto.id;
+                document.getElementById('nombre').value = producto.nombre;
+                document.getElementById('descripcion').value = producto.descripcion;
+                document.getElementById('precio').value = producto.precio;
+                document.getElementById('stock').value = producto.stock;
+                
+                // Cargar categorías
+                await cargarCategorias(producto.categoria_id);
+
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError(error.message);
+                document.getElementById('formActualizarProducto').style.display = 'none';
+                document.getElementById('busquedaProducto').style.display = 'block';
+            }
+        }
+
+        async function cargarCategorias(categoriaSeleccionada = null) {
+            try {
+                const response = await fetch('../Api/controllers/ProductoController.php?action=categorias');
+                const resultado = await response.json();
+                
+                if (!resultado.success) {
+                    throw new Error('Error al cargar las categorías');
+                }
+
+                const selectCategoria = document.getElementById('categoria_id');
+                selectCategoria.innerHTML = '<option value="">Seleccione una categoría</option>';
+
+                resultado.data.forEach(categoria => {
+                    const option = document.createElement('option');
+                    option.value = categoria.id;
+                    option.textContent = categoria.nombre;
+                    if (categoriaSeleccionada && categoria.id == categoriaSeleccionada) {
+                        option.selected = true;
+                    }
+                    selectCategoria.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error('Error al cargar categorías:', error);
+                mostrarError('Error al cargar las categorías');
+            }
+        }
+
+        async function actualizarProducto(event) {
+            event.preventDefault();
+            
+            if (!validarFormulario()) {
+                return;
+            }
+
+            const formData = new FormData(event.target);
+            
+            try {
+                const response = await fetch('../Api/controllers/ProductoController.php?action=actualizar', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const resultado = await response.json();
+
+                if (!resultado.success) {
+                    throw new Error(resultado.message || 'Error al actualizar el producto');
+                }
+
+                alert('Producto actualizado correctamente');
+                window.location.href = 'productos.html';
+
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError(error.message);
+            }
+        }
+
+        function validarFormulario() {
+            const nombre = document.getElementById('nombre').value.trim();
+            const precio = parseFloat(document.getElementById('precio').value);
+            const stock = parseInt(document.getElementById('stock').value);
+            const categoria = document.getElementById('categoria_id').value;
+
+            if (!nombre) {
+                mostrarError('El nombre del producto es requerido');
+                return false;
+            }
+
+            if (isNaN(precio) || precio < 0) {
+                mostrarError('El precio debe ser un número válido mayor o igual a 0');
+                return false;
+            }
+
+            if (isNaN(stock) || stock < 0) {
+                mostrarError('El stock debe ser un número válido mayor o igual a 0');
+                return false;
+            }
+
+            if (!categoria) {
+                mostrarError('Debe seleccionar una categoría');
+                return false;
+            }
+
+            return true;
+        }
+
+        function mostrarError(mensaje) {
+            const mensajeError = document.getElementById('mensajeError');
+            mensajeError.textContent = mensaje;
+            mensajeError.style.display = 'block';
+            setTimeout(() => {
+                mensajeError.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
